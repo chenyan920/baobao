@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>dataInf.js</file>
+        <file>Menu.qml</file>
+        <file>Button.qml</file>
+        <file>normalPig.PNG</file>
+        <file>PopWindow.qml</file>
+        <file>TimerTool.qml</file>
+        <file>drinkPig.PNG</file>
+        <file>TestWindow.qml</file>
+        <file>DrinkView.qml</file>
+        <file>bao.PNG</file>
+        <file>CButton.qml</file>
+        <file>COneDraw.qml</file>
+        <file>MainDraw.qml</file>
+        <file>BaoWindow.qml</file>
+        <file>InfoBar.qml</file>
+        <file>CLable.qml</file>
+    </qresource>
+</RCC>
