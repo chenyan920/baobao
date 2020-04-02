@@ -116,20 +116,28 @@ Window {
             }
         }
         Loader{
+            id:loader
             x:0
             y:150
             height: 250
             width: rootWin.width
             sourceComponent: loaderRect
             visible: drawStatus
-            onLoaded: {
-                console.log("log")
+            onVisibleChanged: {
+                if(visible){
+                    item.running = true
+                }
+                else{
+                    item.running = false
+                }
+                console.log("item.running:"+item.running)
             }
         }
     }
     Component{
         id:loaderRect
         Rectangle{
+            property bool running: false
             anchors.fill: parent
             border.width: 2
             MainDraw{
@@ -153,19 +161,30 @@ Window {
                     }
                     ColorAnimation{
                         id:backGroudAnimation
-                        loops: Animation.Infinite
-                        target: drawRect
+                        target: drawTextRect
                         property: "color"
-                        to:Qt.rgba(Math.random(), Math.random(), Math.random(), 1)
+                        to:Qt.rgba(Math.random(), Math.random(), Math.random(), 0.5)
                         duration: 1000
                     }
                     ColorAnimation{
-                        loops: Animation.Infinite
                         id:textColorAnimation
                         target: drawText
                         property: "color"
                         to:Qt.rgba(Math.random(), Math.random(), Math.random(), 1)
                         duration: 1000
+                    }
+                    Timer{
+                       id:timer
+                       interval: 1000
+                       repeat: true
+                       running: true
+                       onTriggered: {
+                           console.log("ti is time")
+                           backGroudAnimation.to = Qt.rgba(Math.random(), Math.random(), Math.random(), 0.5)
+                           textColorAnimation.to = Qt.rgba(Math.random(), Math.random(), Math.random(), 1)
+                           textColorAnimation.start()
+                           backGroudAnimation .start()
+                       }
                     }
                 }
                 id:drawRect
