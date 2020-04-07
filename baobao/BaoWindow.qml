@@ -5,6 +5,7 @@ import "dataInf.js" as DateInf
 
 Window {
     property bool drawStatus: false
+    property var prizeRecord: new Array
 
     id:rootWin
     x:(Screen.width - width)/2
@@ -40,7 +41,7 @@ Window {
             width: 100
             radius: 50
             border.width:2
-            border.color: "black"
+            border.color: "#FFBBFF"
             Image {
                 id: img
                 visible: false
@@ -62,20 +63,20 @@ Window {
             }
         }
         CButton{
-             id:button
-             anchors.left: statusRect.right
-             anchors.leftMargin: 10
-             //anchors.horizontalCenter: statusRect.horizontalCenter
-             //anchors.top:statusRect.top
-             anchors.verticalCenter: statusRect.verticalCenter
-             height: 50
-             width: height
-             radius: height/2
-             border.width: 2
-             text: "抽奖"
-             onClick : {
-                 drawStatus = !drawStatus
-             }
+            id:button
+            anchors.left: statusRect.right
+            anchors.leftMargin: 10
+            //anchors.horizontalCenter: statusRect.horizontalCenter
+            //anchors.top:statusRect.top
+            anchors.verticalCenter: statusRect.verticalCenter
+            height: 50
+            width: height
+            radius: height/2
+            border.width: 2
+            text: "抽奖"
+            onClick : {
+                drawStatus = !drawStatus
+            }
         }
         Rectangle{
             color: "transparent"
@@ -89,7 +90,7 @@ Window {
             Text {
                 id: nameText
                 anchors.top: statusRect.top
-                anchors.topMargin: parseInt(statusRect.height/10)
+                anchors.topMargin: parseInt(statusRect.height/15)
                 anchors.left: statusRect.left
                 anchors.leftMargin: 20
                 height: parseInt(statusRect.height/4)
@@ -110,36 +111,76 @@ Window {
                         height: parent.height/3
                         width: parent.width
                         leftText: modelData
-                        rightText: "100"
+                        rightText: {
+                            switch(index){
+                            case 0:return drinkPoints
+                            case 1:return drinkTimesOnTime+"/"+drinkTimesOnSelf
+                            case 2:return 100
+                            }
+                        }
                     }
                 }
             }
         }
         Loader{
-            id:loader
+            property bool realdy : false
             x:0
             y:150
             height: 250
             width: rootWin.width
             sourceComponent: loaderRect
             visible: drawStatus
+            onLoaded: {
+                realdy = true
+                console.log("log")
+            }
             onVisibleChanged: {
-                if(visible){
-                    item.running = true
-                }
-                else{
-                    item.running = false
-                }
-                console.log("item.running:"+item.running)
+                if(realdy) item.timerRun(visible);
             }
         }
     }
     Component{
         id:loaderRect
         Rectangle{
-            property bool running: false
+            function timerRun(bool){
+              if(bool) timer.start();
+              else timer.stop();
+            }
+            function getPrizeText(){
+                    var countText = "["+prizeRecord.length+"]"
+                    prizeText.text += countText+ "获得"+prizeRecord[prizeRecord.length-1][0]+"等奖"+"\n"+prizeRecord[prizeRecord.length-1][1]+"\n"
+
+            }
             anchors.fill: parent
             border.width: 2
+            Rectangle{
+                id:textRectangle
+                anchors{
+                    top:parent.top
+                    bottom:parent.bottom
+                    topMargin: 30
+                    right: parent.right
+                }
+                width:parent.width-drawRect.gridWidth-drawRect.gridX-2
+                z:drawRect.z+1
+                border.width: 0
+                Rectangle{
+                    anchors{
+                        top:parent.top
+                        bottom:parent.bottom
+                    }
+                    x:0
+                    y:0
+                    width: 2
+                    color: "blue"
+                }
+                Text {
+                    id: prizeText
+                    anchors.fill: parent
+                    font.pointSize: 10
+                    anchors.margins: 2
+                }
+            }
             MainDraw{
                 Rectangle{
                     id:drawTextRect
@@ -147,23 +188,24 @@ Window {
                     y:0
                     width: parent.width
                     height: 30
-                    border.width: 3
+                    border.width: 2
                     border.color:Qt.rgba(Math.random(), Math.random(), Math.random(), 1)
                     Text{
                         id:drawText
+                        z:100
                         font.bold: true
-                        font.pixelSize: 12
+                        font.pixelSize: 15
                         anchors.fill: parent
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        text:"欢迎来到猪头的抽奖乐园"
+                        text:"欢 迎 来 到 猪 头 的 抽 奖 乐 园"
                         color:Qt.rgba(Math.random(), Math.random(), Math.random(), 1)
                     }
                     ColorAnimation{
                         id:backGroudAnimation
                         target: drawTextRect
                         property: "color"
-                        to:Qt.rgba(Math.random(), Math.random(), Math.random(), 0.5)
+                        to:Qt.rgba(Math.random(), Math.random(), Math.random(), 0.1)
                         duration: 1000
                     }
                     ColorAnimation{
@@ -174,24 +216,23 @@ Window {
                         duration: 1000
                     }
                     Timer{
-                       id:timer
-                       interval: 1000
-                       repeat: true
-                       running: true
-                       onTriggered: {
-                           console.log("ti is time")
-                           backGroudAnimation.to = Qt.rgba(Math.random(), Math.random(), Math.random(), 0.5)
-                           textColorAnimation.to = Qt.rgba(Math.random(), Math.random(), Math.random(), 1)
-                           textColorAnimation.start()
-                           backGroudAnimation .start()
-                       }
+                        id:timer
+                        interval: 1000
+                        repeat: true
+                        running: false
+                        onTriggered: {
+                            backGroudAnimation.to =  Qt.rgba(Math.random(), Math.random(), Math.random(), 0.3)
+                            textColorAnimation.to = Qt.rgba(1, Math.random(), Math.random(), 1)
+                            backGroudAnimation.start()
+                            textColorAnimation.start()
+                        }
                     }
                 }
                 id:drawRect
                 anchors.fill: parent
-                gridX: (rootWin.width-gridWidth)/4
-                gridY: 40
-                buttonWidth: 60
+                gridX: 8
+                gridY: 60
+                buttonWidth: 50
                 buttonMargin: 15
                 onVisibleChanged: {
                     if(visible){
@@ -199,6 +240,13 @@ Window {
                         backGroudAnimation.start()
                         textColorAnimation.start()
                     }
+                }
+                onDrawStopSig: {
+                   // console.log(prizeText.font.pixelSize)
+                    prizeRecord[prizeRecord.length]=new Array
+                    prizeRecord[prizeRecord.length-1]=prizeOutput()
+                    console.log(prizeRecord)
+                    getPrizeText()
                 }
             }
         }
