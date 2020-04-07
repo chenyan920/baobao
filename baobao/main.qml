@@ -5,6 +5,9 @@ import "dataInf.js" as DateInf
 
 Window {
     property string imageSource: "normalPig.PNG"
+    property int drinkPoints: 0
+    property int drinkTimesOnTime: 0
+    property int drinkTimesOnSelf: 0
 
     function outputColor(){
         return rootRect.color
@@ -105,7 +108,9 @@ Window {
         onMenuClicked: {
             switch(index){
             case 0:testWindow.show();break;
-            case 1:drinkWindow.alreadyDrink();break;
+            case 1:drinkWindow.alreadyDrink();
+                   drinkTimesOnSelf += 1
+                   break;
             case 2:var string = DateInf.calculateDayToDay(2017,12,30)
                    console.log(string + typeof(string));break;
             case 4:baoWindow.show()
