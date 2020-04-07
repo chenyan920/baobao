@@ -15,6 +15,9 @@ Rectangle {
     property alias gridY: gridRootRect.y
     property alias buttonWidth:startButton.width
     property int buttonMargin:30
+    property alias gridRectRight: gridRootRect.right
+
+    signal drawStopSig()
 
     function arrayAdd(array,num){
         var result = 0
@@ -105,12 +108,36 @@ Rectangle {
     function randomModel(){
         repeater.randomModel()
     }
-
+    function prizeOutput(){
+        var realPrize = new String
+        switch(prize){
+        case 1 : realPrize = "红包52.1元";break;
+        case 2 : realPrize = "红包5.21元";break;
+        case 3 : realPrize = "红包1元";break;
+        case 4 : realPrize = "红包0.5元";break;
+        case 5 : realPrize = "给猪按摩";break;
+        }
+        var realPrizeArray = [prize,realPrize]
+        return realPrizeArray
+    }
     id:root
     visible:true
     width: 640
     height: 240
-
+    Rectangle{
+        anchors.top: parent.top
+        anchors.topMargin: 30
+        anchors.bottom: gridRootRect.top
+        anchors.left: gridRootRect.left
+        width: gridRootRect.width
+        Text{
+            id:statesText
+            anchors.fill: parent
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            text: ""
+        }
+    }
     Rectangle{
         id:gridRootRect
         x:gridBahX
@@ -120,6 +147,7 @@ Rectangle {
         border.width: 2
         color: "#66225588"
         Grid{
+            id:gridItem
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             width: parent.width-10
@@ -154,6 +182,12 @@ Rectangle {
         anchors.topMargin: buttonMargin
         anchors.horizontalCenter: gridRootRect.horizontalCenter
         onClick: {
+            if(drinkPoints<20){
+                statesText.text = "积分不足，无法抽奖"
+                return
+            }
+            drinkPoints -= 20
+            statesText.text = "抽奖中..."
             sum = 0
             count = 0
             runningTimes = timingCounting()
@@ -173,6 +207,7 @@ Rectangle {
             if(sum>9){sum = 0}
             if(count === runningTimes){
                 stop()
+                drawStopSig()
                 text.text += "获得"+prize+"等奖\n"
             }
         }
