@@ -16,6 +16,7 @@ Window {
         imageSource = "normalPig.PNG"
         closeAnimation.start()
         timerTool.timerStart()
+        drinkPoints+=5
         overDrink()
     }
 
@@ -133,6 +134,7 @@ Window {
                         switch(index){
                         case 0:
                             alreadyDrink();
+                            drinkTimesOnTime += 1
                             break ;
                         case 1: break;
                         }
