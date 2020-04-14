@@ -102,21 +102,26 @@ Window {
                 anchors.top:nameText.bottom
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 1
-                width: parent.width-2
+                width: parent.width-20
                 x:1
                 Repeater{
+                    id:labelRepeater
                     model:["今日积分","今日喝水","猪头幸福度"]
                     CLable{
                         color: "transparent"
                         height: parent.height/3
                         width: parent.width
                         leftText: modelData
+                        buttonVisible: index === 0?true:false
                         rightText: {
                             switch(index){
                             case 0:return drinkPoints
                             case 1:return drinkTimesOnTime+"/"+drinkTimesOnSelf
                             case 2:return 100
                             }
+                        }
+                        onButtonClicked: {
+                             console.log("passport")
                         }
                     }
                 }
