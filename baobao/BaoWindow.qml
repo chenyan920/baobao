@@ -13,7 +13,7 @@ Window {
     height: drawStatus?400:150
     width: 400
     title:"宝宝的页面"
-    visible: true
+    visible: false
     Rectangle{
         anchors.fill: parent
         id:rootRect
@@ -121,11 +121,18 @@ Window {
                             }
                         }
                         onButtonClicked: {
+                             codeDialog.visible = !codeDialog.visible
                              console.log("passport")
                         }
                     }
                 }
             }
+        }
+        CPassportDialog{
+            id:codeDialog
+            visible: false
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
         }
         Loader{
             property bool realdy : false
@@ -233,6 +240,7 @@ Window {
                         }
                     }
                 }
+
                 id:drawRect
                 anchors.fill: parent
                 gridX: 8
