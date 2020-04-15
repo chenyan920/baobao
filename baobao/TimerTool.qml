@@ -42,7 +42,7 @@ Item {
                  timer.stop()
                  oneSecond()
              }
-             console.log("minute:"+minute+"  second:"+second + "drinkInterval:"+drinkInterval)
+             //console.log("minute:"+minute+"  second:"+second + "drinkInterval:"+drinkInterval)
         }
     }
 }
