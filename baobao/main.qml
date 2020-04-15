@@ -60,13 +60,13 @@ Window {
             var day = DateInf.getDay()
             console.log("day:" + day)
             switch(day){
-            case 1 : return "#A8EE2C2C"
-            case 2 : return "#A8EE9A00"
-            case 3 : return "#A8EEEE00"
-            case 4 : return "#A8B3EE3A"
-            case 5 : return "#A8B0E2FF"
-            case 6 : return "#A84682B4"
-            case 0 : return "#A8551A8B"
+            case 1 : return "#A8EE2C"
+            case 2 : return "#A8EE9A"
+            case 3 : return "#A8EEEE"
+            case 4 : return "#A8B3EE"
+            case 5 : return "#A8B0E2"
+            case 6 : return "#A84682"
+            case 0 : return "#A8551A"
             }
         }
         id:rootRect
@@ -74,12 +74,43 @@ Window {
         color:getColor()
         radius: height/2
         Rectangle{
+            id:copyRect
+            anchors.fill: parent
+            radius:height/2
+            color: parent.color
+            z:100
+            visible: true
+            onOpacityChanged: {
+               if(opacity === 0){
+                   visible = false
+                   console.log("111111111111")
+               }
+            }
+            Text{
+                anchors.fill: parent
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                text: "宝宝好"
+            }
+            Behavior on opacity{
+                id:behavior
+                NumberAnimation{
+                    duration: 3000
+                    easing.type:Easing.InCubic
+                }
+            }
+            Component.onCompleted: {
+                copyRect.opacity = 0
+            }
+        }
+        Rectangle{
             id:pig
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             height: parent.height - 10
             width: height
             radius: height/2
+
             Image {
                 id: clockImg
                 visible: false
@@ -104,15 +135,15 @@ Window {
     Menu{
         id:menu
         visible: false
-        buttonName: ["想你了猪","打卡喝水","不想见猪","点错了呢","查看宝宝"]
+        buttonName: ["想你了猪","打卡喝水","不想见猪","功能介绍","查看宝宝"]
         onMenuClicked: {
             switch(index){
-            case 0:testWindow.show();break;
             case 1:drinkWindow.alreadyDrink();
-                   drinkTimesOnSelf += 1
-                   break;
+                drinkTimesOnSelf += 1
+                break;
             case 2:var string = DateInf.calculateDayToDay(2017,12,30)
-                   console.log(string + typeof(string));break;
+                console.log(string + typeof(string));break;
+            case 3:infoWindow.show();break;
             case 4:baoWindow.show()
             }
         }
@@ -138,5 +169,8 @@ Window {
     }
     BaoWindow{
         id:baoWindow
+    }
+    InfoWindow{
+        id:infoWindow
     }
 }
