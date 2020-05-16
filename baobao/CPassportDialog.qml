@@ -167,7 +167,7 @@ Rectangle{
                     if(!decoding(textEdit.text)){
                         showInfoText.text = "密码错误"
                     }
-                    console.log(getPassport("D"))
+                    console.log(getPassport("A"))
                 }
             }
             CButton{

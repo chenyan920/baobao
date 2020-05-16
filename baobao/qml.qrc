@@ -17,5 +17,28 @@
         <file>BaoWindow.qml</file>
         <file>InfoBar.qml</file>
         <file>CLable.qml</file>
+        <file>CPassportDialog.qml</file>
+        <file>InfoWindow.qml</file>
+        <file>pigFactory/1.png</file>
+        <file>pigFactory/bang.png</file>
+        <file>pigFactory/bao.jpeg</file>
+        <file>pigFactory/hammer.png</file>
+        <file>pigFactory/HammerAnimation.qml</file>
+        <file>pigFactory/heng.png</file>
+        <file>pigFactory/InfoRect.qml</file>
+        <file>pigFactory/lue.png</file>
+        <file>pigFactory/meme.png</file>
+        <file>pigFactory/mua.png</file>
+        <file>pigFactory/o.png</file>
+        <file>pigFactory/Pig.qml</file>
+        <file>pigFactory/pigBackGround.jpg</file>
+        <file>pigFactory/ScoreInfo.qml</file>
+        <file>pigFactory/StatusBar.qml</file>
+        <file>pigFactory/TimeSetting.qml</file>
+        <file>pigFactory/timg (1).jpeg</file>
+        <file>pigFactory/timg (1).png</file>
+        <file>pigFactory/timg.jpeg</file>
+        <file>main.cpp</file>
+        <file>pigFactory/MainPig.qml</file>
     </qresource>
 </RCC>

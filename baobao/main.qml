@@ -2,6 +2,7 @@ import QtQuick 2.9
 import QtQuick.Window 2.2
 import QtGraphicalEffects 1.0
 import "dataInf.js" as DateInf
+import "pigFactory"
 
 Window {
     property string imageSource: "normalPig.PNG"
@@ -110,7 +111,6 @@ Window {
             height: parent.height - 10
             width: height
             radius: height/2
-
             Image {
                 id: clockImg
                 visible: false
@@ -135,14 +135,16 @@ Window {
     Menu{
         id:menu
         visible: false
-        buttonName: ["想你了猪","打卡喝水","不想见猪","功能介绍","查看宝宝"]
+        buttonName: ["想你了猪","打卡喝水","猪猪工厂","功能介绍","查看宝宝"]
         onMenuClicked: {
             switch(index){
             case 1:drinkWindow.alreadyDrink();
                 drinkTimesOnSelf += 1
                 break;
             case 2:var string = DateInf.calculateDayToDay(2017,12,30)
-                console.log(string + typeof(string));break;
+                   console.log(string + typeof(string));
+                   pigFactory.show()
+                   break;
             case 3:infoWindow.show();break;
             case 4:baoWindow.show()
             }
@@ -169,6 +171,10 @@ Window {
     }
     BaoWindow{
         id:baoWindow
+    }
+    MainPig{
+        id:pigFactory
+        visible: false
     }
     InfoWindow{
         id:infoWindow
