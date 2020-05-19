@@ -6,8 +6,11 @@ Window {
     property bool allreadyStart: false
     property int score: 0
     property int gameDifficulty: 1
+    property bool changeDiffculty : false
     property var currentPopIndex:[0]
     property var timeArray: [0,0,0]
+    property bool readyGame: false
+
     signal gameOver()
     color: "#C1FFC1"
 
@@ -17,9 +20,10 @@ Window {
     x:(Screen.width - width)/2
     y:(Screen.height - height)/2
 
-    title: qsTr("欢迎来到宝宝的养猪厂！")
+    title: qsTr("欢迎来到宝宝的养猪厂！(test)")
 
     function popPig(){
+        if(!readyGame) return;
         signLabel.text = ""
         var randomNum = Math.floor(Math.random()*6)
         currentPopIndex[0] = randomNum
@@ -31,6 +35,7 @@ Window {
         timer.start()
     }
     function doublePopPig(){
+        if(!readyGame) return;
         signLabel.text = ""
         var randomArray = [Math.floor(Math.random()*3),Math.floor(Math.random()*3)+3]
         currentPopIndex = [].concat(randomArray)
@@ -57,9 +62,28 @@ Window {
         case 5 : return ["o.png",true]
         }
     }
+    function resetAll(){
+        timeSetting.popTime = 200
+        timeSetting.showTime = 800
+        gameDifficulty = 1
+        statusBar.resetStatus()
+        timeArray = [0,0,0]
+        console.log(timeArray)
+        scoreInfo.resetScore()
+        gameOverRect.visible = false
+        startButton.enabled = true
+        score = 0
+    }
     onGameOver: {
+        readyGame = false
+        startButton.enabled = false
+        timer.stop()
+        timer2.stop()
+        timer3.stop()
+        timer4.stop()
+        scoreInfo.setTime(timeArray)
         gameOverRect.visible = true
-        console.log("game over")
+        console.log(timeArray)
     }
     Rectangle{
         id:buttonStart
@@ -78,6 +102,7 @@ Window {
             text: qsTr("START")
         }
         MouseArea{
+            id:startButton
             anchors.fill: parent
             hoverEnabled: true
             onEntered: {
@@ -87,6 +112,7 @@ Window {
                 buttonStart.color = "#C0FF3E"
             }
             onClicked: {
+                readyGame = true
                 timer3.start()
                 allreadyStart = true
                 inRunning = true
@@ -177,11 +203,28 @@ Window {
                 timeArray[0] = 0
                 timeArray[1] += 1
             }
+            if(timeArray[1] === 20){
+                 timeSetting.showTime = 1000
+                 timeSetting.popTime = 100
+                 timer4.start()
+                 gameDifficulty = 2
+            }
             if(timeArray[1] === 60){
                 timeArray[1] = 0
                 timeArray[2] += 1
             }
-            scoreInfo.setTime(timeArray)
+            scoreInfo.setTime(timeArray)//what's up????????
+        }
+    }
+    Timer{
+        id:timer4
+        running: false
+        repeat: true
+        interval: 10000
+        onTriggered: {
+            console.log(score)
+            score += 50
+            console.log(score)
         }
     }
     Rectangle{
@@ -255,23 +298,62 @@ Window {
     }
     Rectangle{
         id:gameOverRect
-        anchors.fill:parent
-        color: "#C1FFC1"
-        visible: false
+        anchors.fill: parent
+        color: "transparent"
         z:1000
-        Text {
-            id: gameOverText
-            text: qsTr("game\nover")
-            font.bold: true
-            font.pointSize: 40
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            anchors.fill: parent
-        }
-        MouseArea{
-            anchors.fill: parent
-            onClicked: {
-                mouse.accepted = true
+        visible: false
+        Rectangle{
+            anchors{
+                fill:parent
+                topMargin: 102
+                bottomMargin: 10
+                rightMargin: 10
+                leftMargin: 10
+            }
+            color: "#C1FFC1"
+            visible: parent.visible
+            z:1000
+            Text {
+                id: gameOverText
+                text: qsTr("game\nover")
+                font.bold: true
+                font.pointSize: 40
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                anchors.fill: parent
+            }
+            Rectangle{
+               id:resetRect
+               width: 88
+               height: 36
+               border.width: 2
+               radius: 10
+               color: "#C0FF3E"
+               anchors.horizontalCenter: parent.horizontalCenter
+               anchors.verticalCenter: parent.verticalCenter
+               anchors.verticalCenterOffset: 120
+               Text {
+                   id: resetText
+                   text: qsTr("o k")
+                   verticalAlignment: Text.AlignVCenter
+                   horizontalAlignment: Text.AlignHCenter
+                   anchors.fill: parent
+               }
+               MouseArea{
+                   anchors.fill: parent
+                   hoverEnabled: true
+                   onEntered: {
+                       resetRect.color = "#9ACD32"
+                   }
+                   onExited: {
+                       resetRect.color = "#C0FF3E"
+                   }
+                   onClicked: {
+                       mouse.accepted = true
+                       resetAll()
+                       console.log("ok")
+                   }
+               }
             }
         }
     }

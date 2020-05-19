@@ -2,7 +2,7 @@ import QtQuick 2.12
 
 Image {
     function retateHammer(){
-        hammer.rotation = -60
+        hammer.rotation = -90
     }
     property real center_X : 0
     property real center_Y : 0
@@ -14,11 +14,11 @@ Image {
     source: "hammer.png"
     Behavior on rotation {
         PropertyAnimation{
-            duration: 100
+            duration: 60
         }
     }
     onRotationChanged: {
-        if(rotation === -60){
+        if(rotation === -90){
             rotation = 0
         }
     }

@@ -46,8 +46,8 @@ Rectangle {
              }
          }else{
              if(needClick){
-                 score-=20
-                 signLabel.text = "哈哈!臭猪猪被放过了！ 积分-20"
+                 score-=10
+                 signLabel.text = "哈哈!臭猪猪被放过了！ 积分-10"
                  statusBar.setFromGame(1)
                  statusBar.gameStatus -= 10
              }else {

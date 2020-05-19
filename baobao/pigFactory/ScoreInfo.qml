@@ -20,6 +20,9 @@ Rectangle {
     function setScore(score){
         repeater.itemAt(3).text = String(score)
     }
+    function resetScore(){
+         repeater.itemAt(3).text = String(0)
+    }
     Grid{
         id:grid
         anchors.fill: parent
@@ -27,7 +30,7 @@ Rectangle {
         rows: 2
         Repeater{
             id:repeater
-            model: ["","00:00:00","积分",score]
+            model: ["","00:00:00","得分",score]
             Text {
                 id: repText
                 height: parent.height/2

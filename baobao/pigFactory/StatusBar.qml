@@ -20,6 +20,14 @@ Rectangle {
             gameOver()
         }
     }
+
+    function resetStatus(){
+        gameStatus = 100
+        for(var i=0;i<repeater.count;i++){
+             repeater.itemAt(i).rightText = 0
+        }
+    }
+
     Rectangle{
         color: "#9AFF9A"
         radius: height/2
